@@ -1,16 +1,16 @@
-# mixtape-api
+## mixtape-api
 
-API Documentation
+### API Documentation
 
-Available data:
+TODO:  Add information describing what a bus request looks like.  Will replace endpoint descriptions.
 
-All Playlists:
+### Playlists
 
-GET request: /playlists
+#### GET request: /playlists
 
-response:
+JSON response will be all playlists:
 
-playlists:[{
+```playlists:[{
   genre: 'string',
   playlistID: int,
   playlistGenre: string,
@@ -26,25 +26,54 @@ playlists:[{
     [songID, artist, songGenre],
     [songID, artist, songGenre]
   ]	
-}]
+}, etc]
+```
+### Song Data
 
-GET request: /search
-data: search terms:
+#### GET request: /search
+Data may be described with one or more search terms.  Returned data will match the intersection of the terms.  For example genre AND artist AND year.
 
-playlistID=
-songID=
-genre=
-artist=
-years=
-album=
-title=
+songID: int
+genre: string
+artist: string
+years={
+  start: yyyy,
+  end: yyyy
+  }
+album: string
+title: string
 
-response will be an array of up to 50 songs
+response will be an array of up to 50 songs including all data fields
 
-UPDATE request: /change
+### Playlist Changes
+
+This request will change one of the songs in a playlist
+
+### UPDATE request: /change
+
 data: 
+```
 {playlistID: playlistID,
 remove: songID,
 add: songID}
+```
+
+response:
+
+```{
+sucess: bool,
+error: message or null,
+songDeleted: {
+ songId: id,
+ title: 'string
+ },
+songAdded: {
+  songId: id,
+  title: 'string'
+}
+```
+
+
+
 
 
