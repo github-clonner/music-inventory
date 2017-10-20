@@ -1,0 +1,21 @@
+{
+  "name": "music-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "config.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "test",
+    "start": "nodemon --ignore node_modules server" 
+  },
+  "author": "Lynne Daniels",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "express": "^4.16.2",
+    "mocha": "^4.0.1"
+  }
+}
