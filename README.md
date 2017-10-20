@@ -32,7 +32,7 @@ JSON response will be all playlists:
 
 #### GET request: /search
 Data may be described with one or more search terms.  Returned data will match the intersection of the terms.  For example genre AND artist AND year.
-
+```
 songID: int
 genre: string
 artist: string
@@ -42,7 +42,7 @@ years={
   }
 album: string
 title: string
-
+```
 response will be an array of up to 50 songs including all data fields
 
 ### Playlist Changes
