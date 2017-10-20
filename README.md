@@ -49,7 +49,7 @@ response will be an array of up to 50 songs including all data fields
 
 This request will change one of the songs in a playlist
 
-### UPDATE request: /change
+#### UPDATE request: /change
 
 data: 
 ```
