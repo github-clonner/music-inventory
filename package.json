@@ -4,18 +4,21 @@
   "description": "",
   "main": "config.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "scripts": {
-    "test": "test",
-    "start": "nodemon --ignore node_modules server/listen" 
+    "test": "mocha --recursive test",
+    "start": "nodemon --ignore node_modules server/listen"
   },
   "author": "Lynne Daniels",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
     "chai": "^4.1.2",
-    "express": "^4.16.2",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "request": "^2.83.0"
   }
 }
