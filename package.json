@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "test",
-    "start": "nodemon --ignore node_modules server" 
+    "start": "nodemon --ignore node_modules server/listen" 
   },
   "author": "Lynne Daniels",
   "license": "ISC",
