@@ -1,3 +1,5 @@
+// npm test will run the tests
+
 var expect = require('chai').expect;
 var request = require('request');
 
