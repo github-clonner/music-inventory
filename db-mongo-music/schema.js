@@ -1,12 +1,17 @@
-let mongoose = require('mongoose');
+// this file is a temporary prototype
+// TODO break playlist Schema into own file
+
+
+const mongoose = require('mongoose');
 
 // connect to DB, will create it if it does not exist
 // will have 20 playlists, 10 playlistGenres
 mongoose.connect('mongodb://localhost/mongo-music', {
-  useMongoClient: true,
+  useMongoClient: true
 });
 
-let db = mongoose.connection;
+const db = mongoose.connection;
+
 db.on('error', console.error.bind(console, 'connection error'));
 db.once('open', function() {
   // we are connected
@@ -16,7 +21,7 @@ db.once('open', function() {
     intId: Number,
     title: String,
     artist: String,
-    songGenre: Number,
+    songGenre: [Number],
     length: Number,
     album: String,
     year: Number,
@@ -48,7 +53,7 @@ db.once('open', function() {
     intId: 3,
     title: 'third Song',
     artist: '3 Artist',
-    songGenre: 7,
+    songGenre: [7], // made this an array to allow future expansion to multiple song categories
     length: 3000,
     album: '3 Album',
     year: 2000
@@ -64,8 +69,8 @@ db.once('open', function() {
   console.log('adding a song ', song);
 
   let playlist = new Playlist({
-    intID: 2,
-    playlistGenre: 2,
+    intId: 7,
+    playlistGenre: {'number': 777, 'name': 'great list'},
     dateLastModified: Date.now(),
     songs: ['59ece2d85764e303adb1da71']
   });
@@ -77,9 +82,14 @@ db.once('open', function() {
       console.log('wow, playlist actually saved better check song id matches up ', playlist);
     }
   });
-
- 
   
 });
 
-module.exports = db;
+let mdb = {};
+mdb.saveSong = function() {
+  mongoose.connect('mongodb://localhost/mongo-music', {
+    useMongoClient: true,
+  });
+};
+
+module.exports = mdb;

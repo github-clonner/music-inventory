@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 mongoose.Promise = global.Promise;
 
 const songSchema = mongoose.Schema({
@@ -10,10 +11,9 @@ const songSchema = mongoose.Schema({
   length: Number,
   album: String,
   year: Number,
-  dateAdded: {type: Date, default: Date.now},
-  playlists: [{type: mongoose.Schema.Types.ObjectId, ref: 'Playlist'}]
+  dateAdded: { type: Date, default: Date.now },
+  playlists: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Playlist' }]
 
 });
-
 
 module.exports = mongoose.model('Song', songSchema);

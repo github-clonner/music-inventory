@@ -1,4 +1,4 @@
-let playlistGenre = [
+const playlistGenre = [
   {
     number: 1,
     name: 'Rock and Roll'
@@ -25,7 +25,7 @@ let playlistGenre = [
   },
   {
     number: 7,
-    name: 'Avant Garde'
+    name: 'Mixed'
   },
   {
     number: 8,
@@ -38,7 +38,7 @@ let playlistGenre = [
   {
     number: 10,
     name: 'Metal'
-  },
+  }
 ];
 
 module.exports = playlistGenre;

@@ -1,55 +1,59 @@
-require('dotenv').config({ path: __dirname + '/../variables.env'});
+const path = require('path');
+
+const ENV_VARS = path.join(__dirname, '/../variables.env');
+require('dotenv').config({ path: ENV_VARS });
+
 const mongoose = require('mongoose');
+console.log(ENV_VARS, process.env.MONGO_DATABASE);
 mongoose.connect(process.env.MONGO_DATABASE, {
-  useMongoClient: true,
+  useMongoClient: true
 });
 mongoose.Promise = global.Promise;
 
 const Song = require('./Songs.js');
 const musicMaker = require('../data-source/music-maker.js');
-//const Playlist = require('Playlists.js');
+// const Playlist = require('Playlists.js');
 const makeMongoData = {};
 
-makeMongoData.newMusicData = async function(num) {
-
-  try{
+makeMongoData.newMusicData = async function (num) {
+  try {
     await Song.insertMany(musicMaker(num));
     console.log('👍 Done!');
-    //process.exit();
+    // process.exit();
   } catch (e) {
     console.log('ERROR ', e);
     process.exit();
   }
 };
 
-makeMongoData.makeThousands = async function(num, count = 0) {
-  try{
+makeMongoData.makeThousands = async function (num, count = 0) {
+  try {
     if (num - count === 1) {
       await makeMongoData.newMusicData(1000, count + 1);
-      console.log('num - count is 1',num, count);
+      console.log('num - count is 1', num, count);
       count += 1;
       process.exit();
-    } else if (num - count > 1){
+    } else if (num - count > 1) {
       await makeMongoData.newMusicData(1000, count + 1);
-      console.log('num - count is > 1',num, count);
+      console.log('num - count is > 1', num, count);
       count += 1;
-      await makeMongoData.makeThousands(num, count)
-
-    }else {
+      await makeMongoData.makeThousands(num, count);
+    } else {
       console.log('all done');
       process.exit();
     }
-
-
   } catch (e) {
     console.log('error ', e);
   }
-}
-//makeMongoData.newMusicData(1000);
-makeMongoData.makeThousands(1000);
-makeMongoData.randomPlaylists = function(num) {
+};
+
+makeMongoData.randomPlaylists = function () {
   // make num playlists of random songs
 
 };
+
+// uncomment and run from console to add n or 1000 * n records;
+makeMongoData.newMusicData(3);
+// makeMongoData.makeThousands(1000);
 
 module.exports = makeMongoData;
