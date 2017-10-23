@@ -4,7 +4,7 @@ const ENV_VARS = path.join(__dirname, '/../variables.env');
 require('dotenv').config({ path: ENV_VARS });
 
 const mongoose = require('mongoose');
-console.log(ENV_VARS, process.env.MONGO_DATABASE);
+
 mongoose.connect(process.env.MONGO_DATABASE, {
   useMongoClient: true
 });
@@ -18,7 +18,7 @@ const makeMongoData = {};
 makeMongoData.newMusicData = async function (num) {
   try {
     await Song.insertMany(musicMaker(num));
-    console.log('👍 Done!');
+    console.log('👍  Done!');
     // process.exit();
   } catch (e) {
     console.log('ERROR ', e);
@@ -53,7 +53,7 @@ makeMongoData.randomPlaylists = function () {
 };
 
 // uncomment and run from console to add n or 1000 * n records;
-makeMongoData.newMusicData(3);
+// makeMongoData.newMusicData(3);
 // makeMongoData.makeThousands(1000);
 
 module.exports = makeMongoData;
