@@ -15,7 +15,6 @@ describe('Mongo Database Tests', () => {
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'mongo db connection error'));
     db.once('open', () => {
-      console.log('connected to mongo test database');
       done();
     });
   });
@@ -33,10 +32,15 @@ describe('Mongo Database Tests', () => {
         year: 2000
       });
       testSong.save((err, data) => {
-        if (err) return console.error(err);
+        if (err) return console.error('error saving to mongoDB', err);
         chai.expect(data.title).to.equal('Test Song');
         return 'string to make the linter happy';
       });
+    });
+  });
+  after((done) => {
+    mongoose.connection.db.dropDatabase(() => {
+      mongoose.connection.close(done);
     });
   });
 });
