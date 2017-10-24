@@ -4,16 +4,13 @@ const Song = require('../db-mongo-music/Songs.js');
 const path = require('path');
 const makeMusic = require('../data-source/music-maker');
 
-//const ENV_VARS = path.join(__dirname, '/../variables.env');
-//require('dotenv').config({ path: ENV_VARS });
-// packagel.json will change env, config will use testing db
+// run tests with NODE_ENV=test to use test DB (see script in package.json)
 const config = require('config');
 const database = config.get('MONGO_DATABASE');
 
 describe('Mongo Database Tests', () => {
   before((done) => {
   // make a temporary db
-    //mongoose.connect(process.env.MONGO_TEST_DATABASE, {
     mongoose.connect(database, {
       useMongoClient: true
     });

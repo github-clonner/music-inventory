@@ -3,14 +3,10 @@
 
 const path = require('path');
 
-//const ENV_VARS = path.join(__dirname, '/../variables.env');
-//require('dotenv').config({ path: ENV_VARS });
 const config = require('config');
 const database = config.get('MONGO_DATABASE');
 
 const mongoose = require('mongoose');
-// console.log('database is : ', database);
-// mongoose.connect(process.env.MONGO_DATABASE, {
 mongoose.connect(database, {
   useMongoClient: true
 });
@@ -55,7 +51,6 @@ makeMongoData.makeThousands = async function (num, count = 0) {
 
 makeMongoData.randomPlaylists = function () {
   // make num playlists of random songs
-
 };
 
 // uncomment and run from console to add n or 1000 * n records;
