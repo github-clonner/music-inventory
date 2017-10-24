@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "NODE_ENV=test mocha --recursive test --reporter nyan",
+    "test": "NODE_ENV=test mocha --recursive test",
     "start": "nodemon --ignore node_modules server/listen"
   },
   "author": "Lynne Daniels",

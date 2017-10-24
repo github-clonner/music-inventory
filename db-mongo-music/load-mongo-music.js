@@ -24,7 +24,8 @@ makeMongoData.newMusicData = async function (num) {
     // process.exit();
   } catch (e) {
     console.log('ERROR ', e);
-    process.exit();
+    // process.exit stops the mocha tests
+    // process.exit();
   }
 };
 
@@ -34,7 +35,7 @@ makeMongoData.makeThousands = async function (num, count = 0) {
       await makeMongoData.newMusicData(1000, count + 1);
       console.log('num - count is 1', num, count);
       count += 1;
-      process.exit();
+      // process.exit();
     } else if (num - count > 1) {
       await makeMongoData.newMusicData(1000, count + 1);
       console.log('num - count is > 1', num, count);
@@ -42,7 +43,7 @@ makeMongoData.makeThousands = async function (num, count = 0) {
       await makeMongoData.makeThousands(num, count);
     } else {
       console.log('all done');
-      process.exit();
+      // process.exit();
     }
   } catch (e) {
     console.log('error ', e);
@@ -54,7 +55,7 @@ makeMongoData.randomPlaylists = function () {
 };
 
 // uncomment and run from console to add n or 1000 * n records;
-makeMongoData.newMusicData(3);
+//makeMongoData.newMusicData(3);
 // makeMongoData.makeThousands(1000);
 
 module.exports = makeMongoData;
