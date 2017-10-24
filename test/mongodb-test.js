@@ -2,14 +2,19 @@ const mongoose = require('mongoose');
 const chai = require('chai');
 const Song = require('../db-mongo-music/Songs.js');
 const path = require('path');
+const makeMusic = require('../data-source/music-maker');
 
-const ENV_VARS = path.join(__dirname, '/../variables.env');
-require('dotenv').config({ path: ENV_VARS });
+//const ENV_VARS = path.join(__dirname, '/../variables.env');
+//require('dotenv').config({ path: ENV_VARS });
+// packagel.json will change env, config will use testing db
+const config = require('config');
+const database = config.get('MONGO_DATABASE');
 
 describe('Mongo Database Tests', () => {
   before((done) => {
   // make a temporary db
-    mongoose.connect(process.env.MONGO_TEST_DATABASE, {
+    //mongoose.connect(process.env.MONGO_TEST_DATABASE, {
+    mongoose.connect(database, {
       useMongoClient: true
     });
     const db = mongoose.connection;
@@ -37,6 +42,11 @@ describe('Mongo Database Tests', () => {
         return 'string to make the linter happy';
       });
     });
+/*    it('should add 5 songs to mongoDB', () => {
+      console.log('afadfadsfdasfd');
+      //console.log(Song.insertMany(makeMusic(5))); // -> Promise { <pending> }
+      Song.insertMany(makeMusic(5)).then(() => console.log(promise))
+    });*/
   });
   after((done) => {
     mongoose.connection.db.dropDatabase(() => {

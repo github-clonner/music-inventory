@@ -1,11 +1,17 @@
+// TODO to make tests work, need make music in other file then called
+// from file with the connection?
+
 const path = require('path');
 
-const ENV_VARS = path.join(__dirname, '/../variables.env');
-require('dotenv').config({ path: ENV_VARS });
+//const ENV_VARS = path.join(__dirname, '/../variables.env');
+//require('dotenv').config({ path: ENV_VARS });
+const config = require('config');
+const database = config.get('MONGO_DATABASE');
 
 const mongoose = require('mongoose');
-
-mongoose.connect(process.env.MONGO_DATABASE, {
+// console.log('database is : ', database);
+// mongoose.connect(process.env.MONGO_DATABASE, {
+mongoose.connect(database, {
   useMongoClient: true
 });
 mongoose.Promise = global.Promise;
@@ -53,7 +59,7 @@ makeMongoData.randomPlaylists = function () {
 };
 
 // uncomment and run from console to add n or 1000 * n records;
-// makeMongoData.newMusicData(3);
+makeMongoData.newMusicData(3);
 // makeMongoData.makeThousands(1000);
 
 module.exports = makeMongoData;

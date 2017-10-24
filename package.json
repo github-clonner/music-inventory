@@ -7,13 +7,14 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha --recursive test",
+    "test": "NODE_ENV=test mocha --recursive test --reporter nyan",
     "start": "nodemon --ignore node_modules server/listen"
   },
   "author": "Lynne Daniels",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "config": "^1.27.0",
     "dotenv": "^4.0.0",
     "express": "^4.16.2",
     "mongoose": "^4.12.3",
