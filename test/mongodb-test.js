@@ -65,26 +65,26 @@ describe('Mongo Test Database', () => {
           chai.expect(stuff).to.have.lengthOf(30);
           done();
         })
-        .catch(err => console.log(err));
+        .catch(err => console.error(err));
     });
   });
 
-  describe('Data Generation Multiplier', function() {
-    console.log(this);
-    this.timeout(77777);
+  describe('Data Generation Multiplier', function () {
+    let beforeCount;
+    let afterCount;
     it('should add 1000 songs to mongoDB', (done) => {
+      Song.count({}, ((err, count) => {
+        if (err) { console.error(err); }
+        beforeCount = count;
+      }));
       makeMongoData.makeThousands(1) // returns promise
-        .then((thousandSongs) => {
-          // TODO expect change in DBlenght === 1000
-          console.log('thousandSongs: ', thousandSongs);
-          // BOGUS - function actually does the inserting
-          Song.insertMany(thousandSongs)
-            .then((stuff) => {
-              console.log('insertMany makes: ', stuff);
-              chai.expect(stuff).to.have.lengthOf(1000);
-              done();
-            })
-            .catch(err => console.log(err));
+        .then(() => {
+          Song.count({}, ((err, count) => {
+            if (err) { console.error(err); }
+            afterCount = count;
+            chai.expect(afterCount - beforeCount).to.equal(1000);
+            done();
+          }));
         });
     });
   });

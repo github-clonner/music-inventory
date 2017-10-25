@@ -31,19 +31,18 @@ makePlaylist.makeNew = async function(genre) {
   });
 };
 
-makePlaylist.getTeninGenre = function(genre) {
+makePlaylist.getTeninGenre = async function (genre) {
   await Songs.find({ songGenre: 17 }, (err, stuff) => {
     if (err) { console.error(err); }
     console.log('I have this many songs in that genre: ', stuff.length);
-    let list = [];
+    const list = [];
     for (let i = 0; i < 10; i += 1) {
-      let rand = Math.floor(Math.random() * stuff.length);
+      const rand = Math.floor(Math.random() * stuff.length);
       list.push(stuff[rand]);
     }
     console.log('here is a list: ', list);
   });
 };
-// console.log(makePlaylist);
 
 async function doTheStuff() {
   await makePlaylist.playlistCount();
@@ -51,7 +50,6 @@ async function doTheStuff() {
   await makePlaylist.makeNew();
   await makePlaylist.getTeninGenre(17);
 
-// TODO find out why this closes too early
   mongoose.connection.close(() => {
     console.log('Mongoose connection disconnected');
   });

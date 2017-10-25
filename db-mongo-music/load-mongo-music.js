@@ -33,12 +33,12 @@ makeMongoData.makeThousands = async function (num, count = 0) {
   try {
     if (num - count === 1) {
       await makeMongoData.newMusicData(1000, count + 1);
-      console.log('num - count is 1', num, count);
+      console.log(`adding ${(count + 1) * 1000} of ${num * 1000}`);
       count += 1;
       // process.exit();
     } else if (num - count > 1) {
       await makeMongoData.newMusicData(1000, count + 1);
-      console.log('num - count is > 1', num, count);
+      console.log(`adding ${(count + 1) * 1000} of ${num * 1000}`);
       count += 1;
       await makeMongoData.makeThousands(num, count);
     } else {
@@ -51,11 +51,11 @@ makeMongoData.makeThousands = async function (num, count = 0) {
 };
 
 makeMongoData.randomPlaylists = function () {
-  // make num playlists of random songs
+  // TODO make num playlists of random songs
 };
 
 // uncomment and run from console to add n or 1000 * n records;
-//makeMongoData.newMusicData(3);
+// makeMongoData.newMusicData(3);
 // makeMongoData.makeThousands(1000);
 
 module.exports = makeMongoData;
