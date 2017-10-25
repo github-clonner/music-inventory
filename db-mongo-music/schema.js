@@ -35,16 +35,7 @@ db.once('open', function() {
     dateLastModified: {type: Date, default: Date.now},
     songs: [{type: mongoose.Schema.Types.ObjectId, ref: 'Song'}]
   });
-//https://dev.mysql.com/doc/refman/5.7/en/creating-database.html
-  //www.lucidchart.com
-  //https://docs.mongodb.com/manual/core/data-model-design/
-//https://www.npmjs.com/package/word-list
-//https://github.com/sindresorhus/random-word
-  //http://mongoosejs.com/docs/guide.html
- // http://mongoosejs.com/docs/index.html
-// http://mongoosejs.com/docs/populate.html
-//https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
-//https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/skeleton_website
+
   let Song = mongoose.model('Song', songSchema);
   let Playlist = mongoose.model('Playlist', playlistSchema);
 
@@ -82,7 +73,6 @@ db.once('open', function() {
       console.log('wow, playlist actually saved better check song id matches up ', playlist);
     }
   });
-  
 });
 
 let mdb = {};

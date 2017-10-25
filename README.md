@@ -15,16 +15,16 @@ JSON response will be all playlists:
   playlistID: int,
   playlistGenre: string,
   songIDs: [  // 10 songs
-    [songID, artist, songGenre],
-    [songID, artist, songGenre],
-    [songID, artist, songGenre],
-    [songID, artist, songGenre],
-    [songID, artist, songGenre],
-    [songID, artist, songGenre],
-    [songID, artist, songGenre],
-    [songID, artist, songGenre],
-    [songID, artist, songGenre],
-    [songID, artist, songGenre]
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre],
+    [songID, intId, artist, songGenre]
   ]	
 }, etc]
 ```

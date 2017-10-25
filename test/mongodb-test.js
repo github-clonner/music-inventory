@@ -24,7 +24,7 @@ describe('Mongo Test Database', () => {
     });
   });
   describe('Song Schema', () => {
-    it('Should save a song to Songs', () => {
+    it('Should save a song to Songs', (done) => {
       const testSong = Song({
         _id: new mongoose.Types.ObjectId(),
         intId: 3,
@@ -38,12 +38,12 @@ describe('Mongo Test Database', () => {
       testSong.save((err, data) => {
         if (err) return console.error('error saving to mongoDB', err);
         chai.expect(data.title).to.equal('Test Song');
-        return 'here is a string to make the linter happy';
+        return done();
       });
     });
   });
   describe('Playlist Schema', () => {
-    it('Should save a Playlist to Playlists', () => {
+    it('Should save a Playlist to Playlists', (done) => {
       const testPlaylist = Playlist({
         intId: 7,
         playlistGenre: { number: 777, name: 'great list' },
@@ -53,43 +53,45 @@ describe('Mongo Test Database', () => {
       testPlaylist.save((err, data) => {
         if (err) return console.error('error saving to DB, ', err);
         chai.expect(data.playlistGenre.number).to.equal(777);
-        return 'here is a string to make the linter happy';
+        return done();
       });
     });
   });
 
   describe('Data Generation Function', () => {
-    it('should generate and add 30 songs to mongoDB', () => {
+    it('should generate and add 30 songs to mongoDB', (done) => {
       Song.insertMany(makeMusic(30))
         .then((stuff) => {
           chai.expect(stuff).to.have.lengthOf(30);
+          done();
         })
         .catch(err => console.log(err));
     });
   });
-  // console.log(makeMongoData.makeThousands(1)); // ->promise
-  // TODO fix this test, and fix db drop to wait for it
-  // Need to refactor underlying function?
-  describe('Data Generation Multiplier', () => {
-    xit('should add 1000 songs to mongoDB', () => {
-      makeMongoData.makeThousands(1)
+
+  describe('Data Generation Multiplier', function() {
+    console.log(this);
+    this.timeout(77777);
+    it('should add 1000 songs to mongoDB', (done) => {
+      makeMongoData.makeThousands(1) // returns promise
         .then((thousandSongs) => {
+          // TODO expect change in DBlenght === 1000
           console.log('thousandSongs: ', thousandSongs);
           // BOGUS - function actually does the inserting
           Song.insertMany(thousandSongs)
             .then((stuff) => {
               console.log('insertMany makes: ', stuff);
               chai.expect(stuff).to.have.lengthOf(1000);
+              done();
             })
             .catch(err => console.log(err));
         });
     });
   });
-  /*after((done) => {
+  after((done) => {
     mongoose.connection.db.dropDatabase(() => {
       mongoose.connection.close(done);
     });
-  });*/
-  // THIS IS NOT WAITING - interrupts DB while adding 1000 recs.
+  });
 });
 
