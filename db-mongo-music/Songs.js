@@ -6,7 +6,7 @@ const songSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   intId: Number,
   title: String,
-  artist: String,
+  artist: Number,
   songGenre: [Number],
   length: Number,
   album: String,
