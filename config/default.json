@@ -1,0 +1,5 @@
+{
+  "name": "music-inventory",
+  "MONGO_DATABASE": "mongodb://localhost/mongo-music",
+  "PORT": 8000
+}

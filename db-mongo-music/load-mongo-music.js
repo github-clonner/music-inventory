@@ -1,11 +1,13 @@
+// TODO to make tests work, need make music in other file then called
+// from file with the connection?
+
 const path = require('path');
 
-const ENV_VARS = path.join(__dirname, '/../variables.env');
-require('dotenv').config({ path: ENV_VARS });
+const config = require('config');
+const database = config.get('MONGO_DATABASE');
 
 const mongoose = require('mongoose');
-console.log(ENV_VARS, process.env.MONGO_DATABASE);
-mongoose.connect(process.env.MONGO_DATABASE, {
+mongoose.connect(database, {
   useMongoClient: true
 });
 mongoose.Promise = global.Promise;
@@ -18,11 +20,12 @@ const makeMongoData = {};
 makeMongoData.newMusicData = async function (num) {
   try {
     await Song.insertMany(musicMaker(num));
-    console.log('👍 Done!');
+    console.log('👍  Done!');
     // process.exit();
   } catch (e) {
     console.log('ERROR ', e);
-    process.exit();
+    // process.exit stops the mocha tests
+    // process.exit();
   }
 };
 
@@ -32,7 +35,7 @@ makeMongoData.makeThousands = async function (num, count = 0) {
       await makeMongoData.newMusicData(1000, count + 1);
       console.log('num - count is 1', num, count);
       count += 1;
-      process.exit();
+      // process.exit();
     } else if (num - count > 1) {
       await makeMongoData.newMusicData(1000, count + 1);
       console.log('num - count is > 1', num, count);
@@ -40,7 +43,7 @@ makeMongoData.makeThousands = async function (num, count = 0) {
       await makeMongoData.makeThousands(num, count);
     } else {
       console.log('all done');
-      process.exit();
+      // process.exit();
     }
   } catch (e) {
     console.log('error ', e);
@@ -49,11 +52,10 @@ makeMongoData.makeThousands = async function (num, count = 0) {
 
 makeMongoData.randomPlaylists = function () {
   // make num playlists of random songs
-
 };
 
 // uncomment and run from console to add n or 1000 * n records;
-makeMongoData.newMusicData(3);
+//makeMongoData.newMusicData(3);
 // makeMongoData.makeThousands(1000);
 
 module.exports = makeMongoData;
