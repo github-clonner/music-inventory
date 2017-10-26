@@ -30,7 +30,7 @@ const makeMusic = function (number, startingIntId) {
       title: pickRandWords(),
       artist: Math.floor(Math.random() * 500000) + 1,
       // made songGenre an array to allow future expansion to multiple song categories
-      songGenre: [Math.floor(Math.random() * 21) + 1],
+      songGenre: [Math.floor(Math.random() * 11) + 1],
       length: Math.floor(Math.random() * 5000) + 5,
       album: pickRandWords(), // TODO need a million albums
       year: Math.floor(Math.random() * 100) + 1917
