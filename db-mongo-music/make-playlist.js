@@ -44,6 +44,7 @@ makePlaylist.getTeninGenre = async function (genre) {
   });
 };
 
+// call this function when running file in console
 async function doTheStuff() {
   await makePlaylist.playlistCount();
   await makePlaylist.songCount();
@@ -55,5 +56,5 @@ async function doTheStuff() {
   });
 }
 
-doTheStuff();
+// doTheStuff();
 module.exports = makePlaylist;

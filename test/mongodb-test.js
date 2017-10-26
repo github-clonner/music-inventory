@@ -58,7 +58,7 @@ describe('Mongo Test Database', () => {
     });
   });
 
-  describe('Data Generation Function', () => {
+  describe('Song Data Generation Function', () => {
     it('should generate and add 30 songs to mongoDB', (done) => {
       Song.insertMany(makeMusic(30, 2))
         .then((stuff) => {
@@ -69,7 +69,7 @@ describe('Mongo Test Database', () => {
     });
   });
 
-  describe('Data Generation Multiplier', function () {
+  describe('Song Data Generation Multiplier', function () {
     let beforeCount;
     let afterCount;
     it('should add 2000 songs to mongoDB', (done) => {
@@ -87,7 +87,7 @@ describe('Mongo Test Database', () => {
           }));
         });
     });
-    it('intId should be unique and sequential', function (done) {
+    it('intId should be unique and sequential', (done) => {
       Song.find({}, ((err, all) => {
         let uniqueAndSequential = true;
         for (let i = 0; i < 10; i += 1) {
