@@ -68,13 +68,24 @@ makePlaylist.newGenrePlaylist = async function (genreObj, id) {
   });
 };
 
+makePlaylist.newMixedPlaylist = function () {
+
+};
+
+makePlaylist.makeTwenty = function () {
+  for (let count = 1; count < 21; count += 1) {
+    makePlaylist.newGenrePlaylist({ songGenre: Math.floor((count % 1.99) + 1) }, count);
+  }
+};
 // call this function when running file in console
 // run 20 versions to make playlists
 async function doTheStuff() {
-  await makePlaylist.newGenrePlaylist({ songGenre: 3 }, 99);
-  mongoose.connection.close(() => {
+  // await makePlaylist.newGenrePlaylist({ songGenre: 3 }, 99);
+  await makePlaylist.makeTwenty();
+
+/*  mongoose.connection.close(() => {
     console.log('Mongoose connection disconnected');
-  });
+  });*/
 }
 
 doTheStuff();
