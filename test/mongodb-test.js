@@ -5,6 +5,7 @@ const Playlist = require('../db-mongo-music/Playlists.js');
 const path = require('path');
 const makeMusic = require('../data-source/music-maker.js');
 const makeMongoData = require('../db-mongo-music/load-mongo-music.js');
+const makePlaylist = require('../db-mongo-music/make-playlist.js');
 
 // run tests with NODE_ENV=test to use test DB (see script in package.json)
 const config = require('config');
@@ -83,10 +84,11 @@ describe('Mongo Test Database', () => {
             if (err) { console.error(err); }
             afterCount = count;
             chai.expect(afterCount - beforeCount).to.equal(2000);
-            done();
+            return done();
           }));
         });
     });
+
     it('intId should be unique and sequential', (done) => {
       Song.find({}, ((err, all) => {
         let uniqueAndSequential = true;
@@ -97,10 +99,32 @@ describe('Mongo Test Database', () => {
           }
         }
         chai.expect(uniqueAndSequential).to.equal(true);
-        done();
+        return done();
       }));
     });
   });
+  // This must run after enough songs are in the DB
+  describe('Playlist Generation Function', () => {
+    let beforeCount;
+    let afterCount;
+    // sometimes this fails, but DB has correct info.  Test is counting too early
+    it('should generate and add 20 playlists to mongoDB', (done) => {
+      Playlist.count({}, (err, count) => {
+        if (err) { console.error(err); }
+        beforeCount = count;
+      });
+      makePlaylist.makeTwenty()
+        .then(() => {
+          Playlist.count({}, (err, count) => {
+            if (err) { console.error(err); }
+            afterCount = count;
+            chai.expect(afterCount - beforeCount).to.equal(20);
+            return done();
+          });
+        });
+    });
+  });
+
   after((done) => {
     mongoose.connection.db.dropDatabase(() => {
       mongoose.connection.close(done);

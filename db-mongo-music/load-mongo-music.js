@@ -23,7 +23,6 @@ let currentSongCount;
 Song.count({}, (err, count) => {
   if (err) { console.error(err); }
   currentSongCount = count + 1;
-  console.log('current Song Count is: ', currentSongCount);
   // uncomment and run from console to add n or 1000 * n records;
 // makeMongoData.newMusicData(3, currentSongCount);
 // makeMongoData.makeThousands(3);

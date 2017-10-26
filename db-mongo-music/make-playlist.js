@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Songs = require('./Songs.js');
 const Playlists = require('./Playlists.js');
 const config = require('config');
-const genrelookup = require('../data-source/playlist-genres.js')
+const genrelookup = require('../data-source/playlist-genres.js');
 
 const database = config.get('MONGO_DATABASE');
 mongoose.connect(database, {
@@ -15,7 +15,6 @@ const makePlaylist = {};
 makePlaylist.getTenRandomGenres = async function () {
   await Songs.aggregate({ $sample: { size: 10 } }, (err, stuff) => {
     if (err) { console.error(err); }
-    console.log(stuff);
   });
 };
 
@@ -27,12 +26,11 @@ makePlaylist.newGenrePlaylist = async function (genreObj, id) {
 
   await Songs.find(genreObj, (err, stuff) => {
     if (err) { console.error(err); }
-    console.log('I have this many songs in that genre: ', stuff.length);
     const uniqueSongs = {};
     // pick a random song and make sure it is not a duplicate
     for (let i = 0; i < 10; i += 1) {
       const rand = Math.floor(Math.random() * stuff.length);
-      // pass over any duplicate song
+      // pass over any duplicate song and try another
       if (uniqueSongs[stuff[rand]._id]) {
         i -= 1;
       } else {
@@ -51,16 +49,13 @@ makePlaylist.newGenrePlaylist = async function (genreObj, id) {
     });
     playlist.save((error, data) => {
       if (err) { console.error(error); }
-      console.log('Here is a brand new playlist', data);
     });
   });
 };
 
-
 makePlaylist.newMixedPlaylist = async function (genreObj, id) {
   await Songs.aggregate({ $sample: { size: 10 } }, (err, list) => {
     if (err) { console.error(err); }
-    console.log(list);
     const playlist = new Playlists({
       intId: id,
       playlistGenre: {
@@ -86,8 +81,7 @@ makePlaylist.makeTwenty = async function () {
     }
   }
 };
-// call this function when running file in console
-// run 20 versions to make playlists
+
 async function doTheStuff() {
   await makePlaylist.makeTwenty();
   // sometimes may close too early?
@@ -96,5 +90,6 @@ async function doTheStuff() {
   });*/
 }
 
-doTheStuff();
+// uncomment the line below and run file in console to populate database;
+// doTheStuff();
 module.exports = makePlaylist;
