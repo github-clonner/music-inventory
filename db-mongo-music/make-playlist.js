@@ -35,10 +35,18 @@ makePlaylist.getTeninGenre = async function (genre) {
   await Songs.find({ songGenre: 17 }, (err, stuff) => {
     if (err) { console.error(err); }
     console.log('I have this many songs in that genre: ', stuff.length);
+    let uniqueSongs = {};
     const list = [];
     for (let i = 0; i < 10; i += 1) {
       const rand = Math.floor(Math.random() * stuff.length);
-      list.push(stuff[rand]);
+      // pass over any duplicate song
+      if (uniqueSongs[stuff[rand]._id]) {
+        i -= 1;
+      } else {
+        // add non duplicate song
+        uniqueSongs[stuff[rand]._id] = true;
+        list.push(stuff[rand]);
+      }
     }
     console.log('here is a list: ', list);
   });
@@ -56,5 +64,5 @@ async function doTheStuff() {
   });
 }
 
-// doTheStuff();
+//doTheStuff();
 module.exports = makePlaylist;
