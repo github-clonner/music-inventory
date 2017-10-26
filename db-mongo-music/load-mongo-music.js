@@ -25,14 +25,14 @@ Song.count({}, (err, count) => {
   currentSongCount = count + 1;
   console.log('current Song Count is: ', currentSongCount);
   // uncomment and run from console to add n or 1000 * n records;
-//makeMongoData.newMusicData(3, currentSongCount);
-makeMongoData.makeThousands(3);
+// makeMongoData.newMusicData(3, currentSongCount);
+// makeMongoData.makeThousands(3);
 });
 
 makeMongoData.newMusicData = async function (num, currentSongCount) {
   try {
     await Song.insertMany(musicMaker(num, currentSongCount));
-    console.log('👍  Done!');
+    // console.log('👍  Done!');
     // process.exit();
   } catch (e) {
     console.log('ERROR ', e);
@@ -47,6 +47,7 @@ makeMongoData.makeThousands = async function (num, count = 0) {
     if (num - count === 1) {
       await makeMongoData.newMusicData(1000, currentSongCount);
       console.log(`adding ${(count + 1) * 1000} of ${num * 1000}`);
+      console.log('👍 all done');
       count += 1;
       // process.exit();
     } else if (num - count > 1) {
@@ -56,8 +57,7 @@ makeMongoData.makeThousands = async function (num, count = 0) {
       count += 1;
       await makeMongoData.makeThousands(num, count);
     } else {
-      console.log('all done');
-      // process.exit();
+      console.error('hmmm, error, never expected to end up here');
     }
   } catch (e) {
     console.log('error ', e);

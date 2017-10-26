@@ -27,9 +27,9 @@ describe('Mongo Test Database', () => {
     it('Should save a song to Songs', (done) => {
       const testSong = Song({
         _id: new mongoose.Types.ObjectId(),
-        intId: 3,
+        intId: 1,
         title: 'Test Song',
-        artist: 'Test Artist',
+        artist: 7,
         songGenre: [7], // made this an array to allow future expansion to multiple song categories
         length: 3000,
         album: 'Test Album',
@@ -45,7 +45,7 @@ describe('Mongo Test Database', () => {
   describe('Playlist Schema', () => {
     it('Should save a Playlist to Playlists', (done) => {
       const testPlaylist = Playlist({
-        intId: 7,
+        intId: 1,
         playlistGenre: { number: 777, name: 'great list' },
         dateLastModified: Date.now(),
         songs: ['59ece2d85764e303adb1da71']
@@ -60,7 +60,7 @@ describe('Mongo Test Database', () => {
 
   describe('Data Generation Function', () => {
     it('should generate and add 30 songs to mongoDB', (done) => {
-      Song.insertMany(makeMusic(30))
+      Song.insertMany(makeMusic(30, 2))
         .then((stuff) => {
           chai.expect(stuff).to.have.lengthOf(30);
           done();
@@ -72,20 +72,33 @@ describe('Mongo Test Database', () => {
   describe('Data Generation Multiplier', function () {
     let beforeCount;
     let afterCount;
-    it('should add 1000 songs to mongoDB', (done) => {
+    it('should add 2000 songs to mongoDB', (done) => {
       Song.count({}, ((err, count) => {
         if (err) { console.error(err); }
         beforeCount = count;
       }));
-      makeMongoData.makeThousands(1) // returns promise
+      makeMongoData.makeThousands(2) // returns promise
         .then(() => {
           Song.count({}, ((err, count) => {
             if (err) { console.error(err); }
             afterCount = count;
-            chai.expect(afterCount - beforeCount).to.equal(1000);
+            chai.expect(afterCount - beforeCount).to.equal(2000);
             done();
           }));
         });
+    });
+    it('intId should be unique and sequential', function (done) {
+      Song.find({}, ((err, all) => {
+        let uniqueAndSequential = true;
+        for (let i = 0; i < 10; i += 1) {
+          if (i + 1 !== all[i].intId) {
+            console.log(i, all[i]);
+            uniqueAndSequential = false;
+          }
+        }
+        chai.expect(uniqueAndSequential).to.equal(true);
+        done();
+      }));
     });
   });
   after((done) => {
