@@ -11,28 +11,15 @@ mongoose.connect(database, {
 mongoose.Promise = global.Promise;
 const makePlaylist = {};
 
-/*makePlaylist.playlistCount = async function () {
-  await Playlists.count({}, (err, count) => {
-    if (err) { console.error(err); }
-    console.log('playlists: ', count);
-  });
-};
-
-makePlaylist.songCount = async function () {
-  await Songs.count({}, (err, count) => {
-    if (err) { console.error(err); }
-    console.log('songs: ', count);
-  });
-};*/
-
-// genre must be an integer between 1 - 10 inclusive
-// genre 7 is a mixed list
+// selects 10 random songs from entire collection
 makePlaylist.getTenRandomGenres = async function () {
   await Songs.aggregate({ $sample: { size: 10 } }, (err, stuff) => {
     if (err) { console.error(err); }
     console.log(stuff);
   });
 };
+
+// Make a new playlist in a specific genre
 // genreObj is {songGenre: int} where int is number btwn 1 -10 inclusive
 // id is playlist id, expect to have 1 - 20, but more wont break anything. yet.
 makePlaylist.newGenrePlaylist = async function (genreObj, id) {
@@ -42,6 +29,7 @@ makePlaylist.newGenrePlaylist = async function (genreObj, id) {
     if (err) { console.error(err); }
     console.log('I have this many songs in that genre: ', stuff.length);
     const uniqueSongs = {};
+    // pick a random song and make sure it is not a duplicate
     for (let i = 0; i < 10; i += 1) {
       const rand = Math.floor(Math.random() * stuff.length);
       // pass over any duplicate song
@@ -68,21 +56,41 @@ makePlaylist.newGenrePlaylist = async function (genreObj, id) {
   });
 };
 
-makePlaylist.newMixedPlaylist = function () {
 
+makePlaylist.newMixedPlaylist = async function (genreObj, id) {
+  await Songs.aggregate({ $sample: { size: 10 } }, (err, list) => {
+    if (err) { console.error(err); }
+    console.log(list);
+    const playlist = new Playlists({
+      intId: id,
+      playlistGenre: {
+        number: genreObj.songGenre,
+        name: genrelookup.lookup(genreObj.songGenre)
+      },
+      songs: list
+    });
+    playlist.save((error, data) => {
+      if (err) { console.error(err); }
+      return data;
+    });
+  });
 };
 
-makePlaylist.makeTwenty = function () {
+makePlaylist.makeTwenty = async function () {
   for (let count = 1; count < 21; count += 1) {
-    makePlaylist.newGenrePlaylist({ songGenre: Math.floor((count % 1.99) + 1) }, count);
+    // these playlists are mixedGenre
+    if (count === 7 || count === 8) {
+      await makePlaylist.newMixedPlaylist({ songGenre: Math.floor((count % 1.99) + 1) }, count);
+    } else {
+      await makePlaylist.newGenrePlaylist({ songGenre: Math.floor((count % 1.99) + 1) }, count);
+    }
   }
 };
 // call this function when running file in console
 // run 20 versions to make playlists
 async function doTheStuff() {
-  // await makePlaylist.newGenrePlaylist({ songGenre: 3 }, 99);
   await makePlaylist.makeTwenty();
-
+  // sometimes may close too early?
 /*  mongoose.connection.close(() => {
     console.log('Mongoose connection disconnected');
   });*/
