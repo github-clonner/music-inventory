@@ -19,17 +19,21 @@ const Playlist = require('./Playlists.js');
 const makeMongoData = {};
 
 // find starting number to increment a unique integer id for each song
-let currentSongCount;
-Song.count({}, (err, count) => {
+let currentSongCount = 1;
+const getSongCount = function () {Song.count({}, (err, count) => {
   if (err) { console.error(err); }
   currentSongCount = count + 1;
+  console.log('SONG COUNT IS', currentSongCount);
+
   // uncomment and run from console to add n or 1000 * n records;
 // makeMongoData.newMusicData(3, currentSongCount);
 // makeMongoData.makeThousands(3);
-});
+});}
 
-makeMongoData.newMusicData = async function (num, currentSongCount) {
+makeMongoData.newMusicData = async function (num/*, currentSongCount*/) {
   try {
+    await getSongCount();
+    console.log('in here', currentSongCount);
     await Song.insertMany(musicMaker(num, currentSongCount));
     // console.log('👍  Done!');
     // process.exit();

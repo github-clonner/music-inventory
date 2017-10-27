@@ -14,8 +14,8 @@ const musicMaker = require('../data-source/music-maker.js');
 const Playlist = require('../db-mongo-music/Playlists.js');
 
 let playlists;
-
-const getAllPlaylists = async function (cb) {
+let m = {};
+m.getAllPlaylists = async function (cb) {
   await Playlist.find({})
     .populate('songs', '_id intId artist songGenre')
     .exec((err, data) => {
@@ -24,6 +24,6 @@ const getAllPlaylists = async function (cb) {
     });
 };
 
-getAllPlaylists((data) => { console.log(data[0].songs[0]); });
+//getAllPlaylists((data) => { console.log(data[0].songs[0]); });
 
-module.exports = getAllPlaylists;
+module.exports = m;

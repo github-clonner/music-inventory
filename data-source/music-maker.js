@@ -20,7 +20,8 @@ const pickRandWords = function () {
   }
   return output.join(' ');
 };
-// number should be less than 1001
+// number should be less than 1001 - will make this many songs
+// startingIntId used to create a unique integer id, relies on count of existing records
 const makeMusic = function (number, startingIntId) {
   const newSongs = [];
   for (let i = 0; i < number; i += 1) {
