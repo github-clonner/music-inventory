@@ -1,26 +1,4 @@
-
-/* Playlists
-
-GET request: /playlists
-
-JSON response will be all playlists:
-
-  genre: 'string',
-  playlistID: int,
-  playlistGenre: string,
-  songIDs: [  // 10 songs
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre],
-    [songID, intId, artist, songGenre]
-  ]
- }, etc] */
+// will execute a callback with object containg all playlists;
 
 const path = require('path');
 const config = require('config');
@@ -38,24 +16,14 @@ const Playlist = require('../db-mongo-music/Playlists.js');
 let playlists;
 
 const getAllPlaylists = async function (cb) {
-  await Playlist.find({}, (err, data) => {
-    if (err) { console.error(err); }
-    cb(data);
-  });
+  await Playlist.find({})
+    .populate('songs', '_id intId artist songGenre')
+    .exec((err, data) => {
+      if (err) { console.error(err); }
+      cb(data);
+    });
 };
 
-getAllPlaylists(function (data) {console.log(data)});
+getAllPlaylists((data) => { console.log(data[0].songs[0]); });
 
 module.exports = getAllPlaylists;
-
-
-/*
-const getAllPlaylists = async function (cb) {
-  await Playlist.find({}, (err, data) => {
-    if (err) { console.error(err); }
-  }).then((res, rej) => {
-    playlists = res;
-    cb(playlists);
-  });
-};*/
-
