@@ -71,12 +71,12 @@ makePlaylist.newMixedPlaylist = async function (genreObj, id) {
 };
 
 makePlaylist.makeTwenty = async function () {
-  for (let count = 1; count < 21; count += 1) {
+  for (let count = 1, genre = 0; count < 21; count += 1) {
     // these playlists are mixedGenre
     if (count === 7 || count === 8) {
-      await makePlaylist.newMixedPlaylist({ songGenre: Math.floor((count % 1.99) + 1) }, count);
+      await makePlaylist.newMixedPlaylist({ songGenre: genre }, count);
     } else {
-      await makePlaylist.newGenrePlaylist({ songGenre: Math.floor((count % 1.99) + 1) }, count);
+      await makePlaylist.newGenrePlaylist({ songGenre: genre }, count);
     }
   }
 };

@@ -24,6 +24,6 @@ m.getAllPlaylists = async function (cb) {
     });
 };
 
-//getAllPlaylists((data) => { console.log(data[0].songs[0]); });
+// getAllPlaylists((data) => { console.log(data[0].songs[0]); });
 
 module.exports = m;
