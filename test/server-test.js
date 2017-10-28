@@ -10,5 +10,12 @@ describe('Server Tests', () => {
       done();
     });
   });
+  it('responds to GET on /playlists', (done) => {
+    request('http://localhost:8000/playlists', (error, response, body) => {
+      chai.expect(JSON.parse(body)).to.be.a('array');
+      chai.expect(JSON.parse(body)).to.have.lengthOf(20);
+      done();
+    });
+  });
 });
 

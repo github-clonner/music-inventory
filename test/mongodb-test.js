@@ -5,9 +5,7 @@ const Playlist = require('../db-mongo-music/Playlists.js');
 const path = require('path');
 const makeMusic = require('../data-source/music-maker.js');
 const makeMongoData = require('../db-mongo-music/load-mongo-music.js');
-const makePlaylist = require('../db-mongo-music/make-playlist.js');
 const getlists = require('../api/playlists.js');
-
 
 // run tests with NODE_ENV=test to use test DB (see script in package.json)
 const config = require('config');
@@ -93,7 +91,10 @@ describe('Mongo Test Database', () => {
       }));
     });
   });
+
   // This must run after enough songs are in the DB
+const makePlaylist = require('../db-mongo-music/make-playlist.js');
+
   describe('Playlist Generation Function', () => {
     let beforeCount;
     let afterCount;

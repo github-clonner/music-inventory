@@ -23,7 +23,6 @@ makePlaylist.getTenRandomGenres = async function () {
 // id is playlist id, expect to have 1 - 20, but more wont break anything. yet.
 makePlaylist.newGenrePlaylist = async function (genreObj, id) {
   const list = [];
-
   await Songs.find(genreObj, (err, stuff) => {
     if (err) { console.error(err); }
     const uniqueSongs = {};
@@ -91,5 +90,6 @@ async function doTheStuff() {
 }
 
 // uncomment the line below and run file in console to populate database;
+// THEN PUT IT BACK OR ALL THE TESTS WILL BREAK
 // doTheStuff();
 module.exports = makePlaylist;

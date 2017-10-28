@@ -23,7 +23,6 @@ let currentSongCount = 1;
 const getSongCount = function () {Song.count({}, (err, count) => {
   if (err) { console.error(err); }
   currentSongCount = count + 1;
-  console.log('SONG COUNT IS', currentSongCount);
 
   // uncomment and run from console to add n or 1000 * n records;
 // makeMongoData.newMusicData(3, currentSongCount);
@@ -33,7 +32,6 @@ const getSongCount = function () {Song.count({}, (err, count) => {
 makeMongoData.newMusicData = async function (num/*, currentSongCount*/) {
   try {
     await getSongCount();
-    console.log('in here', currentSongCount);
     await Song.insertMany(musicMaker(num, currentSongCount));
     // console.log('👍  Done!');
     // process.exit();

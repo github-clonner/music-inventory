@@ -42,6 +42,6 @@ const makeMusic = function (number, startingIntId) {
 };
 
 /* const testArr = makeMusic(3, 1);
-console.log(testArr); */
+console.log(testArr);*/ 
 
 module.exports = makeMusic;
