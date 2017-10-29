@@ -86,7 +86,7 @@ async function doTheStuff() {
   // sometimes may close too early?
 /*  mongoose.connection.close(() => {
     console.log('Mongoose connection disconnected');
-  });*/
+  }); */
 }
 
 // uncomment the line below and run file in console to populate database;

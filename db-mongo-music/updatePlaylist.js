@@ -1,3 +1,6 @@
+// DELETE file IF MOVING TO api/change works
+
+/*
 const mongoose = require('mongoose');
 const config = require('config');
 
@@ -12,13 +15,13 @@ const Playlist = require('../db-mongo-music/Playlists.js');
 
 /* const testObj = {
   playlistID: 1,
-  remove: '59f12408cc228b92a2f126ca',
+  remove: '59f12247683c69928365cb9b',
   add: '59f12247683c69928365c3ee'
 }; */
 // will delete all copies of the pulled song
 // push will fail if the pull does not exist
 // nModified":0 is only indication of invalid pull;
-const swapSongOnPlaylist = async function (swap, cb) {
+/* const swapSongOnPlaylist = async function (swap, cb) {
   let message = 'swap request status: ';
   await Playlist.update(
     { intId: swap.playlistID },
@@ -36,6 +39,6 @@ const swapSongOnPlaylist = async function (swap, cb) {
     }
   );
 };
-// swapSongOnPlaylist(testObj, (data) => { console.log(data); });
+//swapSongOnPlaylist(testObj, (data) => { console.log(data); });
 
-module.exports = swapSongOnPlaylist;
+module.exports = swapSongOnPlaylist; */

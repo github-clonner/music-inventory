@@ -49,28 +49,21 @@ response will be an array of up to 50 songs including all data fields
 
 This request will change one of the songs in a playlist
 
-#### UPDATE request: /change
+#### POST request: /change
 
 data: 
 ```
 {playlistID: playlistID,
 remove: songID,
 add: songID}
+
+playlistID should be an integer between 1 and 20 inclusive
+songIDs are strings that correspond to mongo object IDs
 ```
 
-response:
+sample response:
 
-```{
-sucess: bool,
-error: message or null,
-songDeleted: {
- songId: id,
- title: 'string
- },
-songAdded: {
-  songId: id,
-  title: 'string'
-}
+```swap request status:  {"n":1,"nModified":0,"ok":1}
 ```
 
 
