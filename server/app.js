@@ -33,26 +33,26 @@ console.log('Server running at http://127.0.0.1:8000/');
   next(err);
 });*/
 
-app.get('/playlists', (req, res, next) => {
+app.get('/playlists', (req, res) => {
   playlists.getAllPlaylists((data) => {
     res.send(data);
   });
 });
 
-app.post('/change', (req, res, next) => {
-  console.log('truee??,', ('playlistID' in req.body));
+app.post('/change', (req, res) => {
+
   if ('playlistID' in req.body) {
-    change(req.body, (status) => {
-      res.send(`It worked!!!${status}\n`, 200);
+    change(req.body, (result) => {
+      res.end(`It worked!!!${result}\n`);
     });
-    
   } else {
-    res.send('playlistID key not found. \n?', 200);
+    res.end('playlistID key not found. \n?');
   }
 
+  // });
 });
 
 module.exports = app;
 
-/*curl -d "playlistID=1&remove=59f12408cc228b92a2f127f0&add=59f12247683c69928365c547" -X POST http://localhost:8000/change
+/*curl -d "playlistID=1&remove=59f12247683c69928365c429&add=59f12408cc228b92a2f12a0f" -X POST http://localhost:8000/change
 */
