@@ -15,12 +15,14 @@ const Playlist = require('../db-mongo-music/Playlists.js');
   remove: '59f12247683c69928365c547',
   add: '59f12408cc228b92a2f122ce'
 }; */
+
+// May refactor to use $addToSet - avoids duplicates?  See http://www.jonahnisenson.com/tips-on-working-with-embedded-arrays-in-mongoosemongo/
 // will delete all copies of the pulled song
 // push will fail if the pull does not exist
 // nModified":0 is only indication of invalid pull;
+
 const swapSongOnPlaylist = async function (swap, cb) {
   let message = 'swap request status: ';
-  console.log('swap received: ', swap);
   try {
     let message = '';
     await Playlist.update(
