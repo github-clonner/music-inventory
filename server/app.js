@@ -45,18 +45,19 @@ app.post('/change', (req, res) => {
 });
 
 app.post('/search', (req, res) => {
-  console.log('artist search received', req.body);
   if ('artist' in req.body) {
+    console.log('artist search received', req.body);
     search.artist(parseInt(req.body.artist, 10), (result) => {
-      res.send(result);
+      console.log('call me maybe artist search?');
+      console.log('result is : ', result);
+      res.end(JSON.stringify(result));
     });
-  }
-  if ('title' in req.body) {
+  } else if ('title' in req.body) {
     console.log('title search rcvd', req.body);
     search.title(req.body.title, (result) => {
       console.log('call me maybe?');
       console.log('result is : ', result);
-      res.send(result);
+      res.end(JSON.stringify(result));
     });
   } else {
     res.end(`${((req.body.title))} ? I got nothing. Sry\n`);

@@ -23,7 +23,7 @@ songSchema.statics.findTitle = function (title, cb) {
 
 songSchema.statics.findArtist = function (artist, cb) {
   console.log('searching for an artist ', artist);
-  //console.log(this.find({ artist }));
+  // console.log(this.find({ artist }));
   return this.find({ artist }, cb);
 };
 
