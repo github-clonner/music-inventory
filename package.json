@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha --recursive test --exit",
-    "start": "nodemon --ignore node_modules server/listen"
+    "start": "nodemon --ignore node_modules server/app"
   },
   "author": "Lynne Daniels",
   "license": "ISC",

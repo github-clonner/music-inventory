@@ -6,6 +6,8 @@ config/staging.json
 config/test.json
 variables.env
 notes.txt
+/notes
+test-disable/
 
 # OS X
 .DS_Store

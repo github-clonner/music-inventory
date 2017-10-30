@@ -40,5 +40,10 @@ const playlistGenre = [
     name: 'Metal'
   }
 ];
+// lookup playlist name by number
+//  0 < genNum < 11
+playlistGenre.lookup = genNum =>
+  playlistGenre.filter(v =>
+    v.number === genNum)[0].name;
 
 module.exports = playlistGenre;

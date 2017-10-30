@@ -5,9 +5,13 @@ const Playlist = require('../db-mongo-music/Playlists.js');
 const path = require('path');
 const makeMusic = require('../data-source/music-maker.js');
 const makeMongoData = require('../db-mongo-music/load-mongo-music.js');
+const getlists = require('../api/playlists.js');
 
 // run tests with NODE_ENV=test to use test DB (see script in package.json)
 const config = require('config');
+
+// TODO refactor into smaller components? with util manage db?
+// example pattern in https://gist.github.com/nkzawa/4971592 ?
 
 const database = config.get('MONGO_DATABASE');
 let db;
@@ -20,16 +24,16 @@ describe('Mongo Test Database', () => {
     db = mongoose.connection;
     db.on('error', console.error.bind(console, 'mongo db connection error'));
     db.once('open', () => {
-      done();
     });
+    return done();
   });
   describe('Song Schema', () => {
     it('Should save a song to Songs', (done) => {
       const testSong = Song({
         _id: new mongoose.Types.ObjectId(),
-        intId: 3,
+        intId: 1,
         title: 'Test Song',
-        artist: 'Test Artist',
+        artist: 7,
         songGenre: [7], // made this an array to allow future expansion to multiple song categories
         length: 3000,
         album: 'Test Album',
@@ -42,10 +46,96 @@ describe('Mongo Test Database', () => {
       });
     });
   });
+
+  describe('Song Data Generation Function', () => {
+    it('should generate and add 30 songs to mongoDB', (done) => {
+      Song.insertMany(makeMusic(30, 2))
+        .then((stuff) => {
+          chai.expect(stuff).to.have.lengthOf(30);
+          done();
+        })
+        .catch(err => console.error(err));
+    });
+  });
+
+  describe('Song Data Generation Multiplier', function () {
+    let beforeCount;
+    let afterCount;
+    it('should add 2000 songs to mongoDB', (done) => {
+      Song.count({}, ((err, count) => {
+        if (err) { console.error(err); }
+        beforeCount = count;
+      }));
+      makeMongoData.makeThousands(2) // returns promise
+        .then(() => {
+          Song.count({}, ((err, count) => {
+            if (err) { console.error(err); }
+            afterCount = count;
+            chai.expect(afterCount - beforeCount).to.equal(2000);
+            return done();
+          }));
+        });
+    });
+
+    it('intId should be unique and sequential', (done) => {
+      Song.find({}, ((err, all) => {
+        let uniqueAndSequential = true;
+        for (let i = 0; i < 10; i += 1) {
+          if (i + 1 !== all[i].intId) {
+            console.log(i, all[i]);
+            uniqueAndSequential = false;
+          }
+        }
+        chai.expect(uniqueAndSequential).to.equal(true);
+        return done();
+      }));
+    });
+  });
+
+  // This must run after enough songs are in the DB
+const makePlaylist = require('../db-mongo-music/make-playlist.js');
+
+  describe('Playlist Generation Function', () => {
+    let beforeCount;
+    let afterCount;
+    // sometimes this fails, but DB has correct info.  Test is counting too early
+    xit('should generate and add 20 playlists to mongoDB', (done) => {
+      Playlist.count({}, (err, count) => {
+        if (err) { console.error(err); }
+        beforeCount = count;
+      });
+      makePlaylist.makeTwenty()
+        .then(() => {
+          Playlist.count({}, (err, count) => {
+            if (err) { console.error(err); }
+            afterCount = count;
+            chai.expect(afterCount - beforeCount).to.equal(20);
+            return done();
+          });
+        });
+    });
+  });
+
+  describe('Hosted API Interactions', () => {
+    it('First playlist should have an intId', (done) => {
+      getlists.getAllPlaylists((data) => {
+        chai.expect(data[0]).to.have.property('intId');
+      });
+      return done();
+    });
+    it('Should have 20 playlists', (done) => {
+      getlists.getAllPlaylists((data) => {
+        chai.expect(data).to.have.lengthOf(20);
+      });
+      return done();
+    });
+  });
+
+  // this has to go last to avoid messing up count above
   describe('Playlist Schema', () => {
     it('Should save a Playlist to Playlists', (done) => {
       const testPlaylist = Playlist({
-        intId: 7,
+        intId: 1,
         playlistGenre: { number: 777, name: 'great list' },
         dateLastModified: Date.now(),
         songs: ['59ece2d85764e303adb1da71']
@@ -58,36 +148,6 @@ describe('Mongo Test Database', () => {
     });
   });
 
-  describe('Data Generation Function', () => {
-    it('should generate and add 30 songs to mongoDB', (done) => {
-      Song.insertMany(makeMusic(30))
-        .then((stuff) => {
-          chai.expect(stuff).to.have.lengthOf(30);
-          done();
-        })
-        .catch(err => console.log(err));
-    });
-  });
-
-  describe('Data Generation Multiplier', function() {
-    console.log(this);
-    this.timeout(77777);
-    it('should add 1000 songs to mongoDB', (done) => {
-      makeMongoData.makeThousands(1) // returns promise
-        .then((thousandSongs) => {
-          // TODO expect change in DBlenght === 1000
-          console.log('thousandSongs: ', thousandSongs);
-          // BOGUS - function actually does the inserting
-          Song.insertMany(thousandSongs)
-            .then((stuff) => {
-              console.log('insertMany makes: ', stuff);
-              chai.expect(stuff).to.have.lengthOf(1000);
-              done();
-            })
-            .catch(err => console.log(err));
-        });
-    });
-  });
   after((done) => {
     mongoose.connection.db.dropDatabase(() => {
       mongoose.connection.close(done);

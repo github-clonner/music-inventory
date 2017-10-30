@@ -8,7 +8,6 @@ const wordListPath = require('word-list');
 const wordArray = fs.readFileSync(wordListPath, 'utf-8')
   .split('\n');
 // TODO get previous count from DB to create an integer counter
-let previousId = 0;
 
 // pick 1 - 3 words to be song title
 const pickRandWords = function () {
@@ -21,28 +20,28 @@ const pickRandWords = function () {
   }
   return output.join(' ');
 };
-// number should be less than 1001
-const makeMusic = function (number, iteration = 1) {
+// number should be less than 1001 - will make this many songs
+// startingIntId used to create a unique integer id, relies on count of existing records
+const makeMusic = function (number, startingIntId) {
   const newSongs = [];
   for (let i = 0; i < number; i += 1) {
     const song = new Song({
       _id: new mongoose.Types.ObjectId(), // hmmm
-      intId: (previousId * iteration) + 1,
+      intId: startingIntId + i,
       title: pickRandWords(),
-      artist: pickRandWords(), // TODO need 100,000 names
+      artist: Math.floor(Math.random() * 500000) + 1,
       // made songGenre an array to allow future expansion to multiple song categories
-      songGenre: [Math.floor(Math.random() * 21) + 1],
+      songGenre: [Math.floor(Math.random() * 11) + 1],
       length: Math.floor(Math.random() * 5000) + 5,
       album: pickRandWords(), // TODO need a million albums
       year: Math.floor(Math.random() * 100) + 1917
     });
     newSongs.push(song);
-    previousId += 1;
   }
   return newSongs;
 };
 
-/* const testArr = makeMusic(3);
-console.log(testArr); */
+/* const testArr = makeMusic(3, 1);
+console.log(testArr);*/ 
 
 module.exports = makeMusic;

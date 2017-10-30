@@ -9,4 +9,10 @@ const playlistSchema = mongoose.Schema({
   songs: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Song' }]
 });
 
+playlistSchema.methods.deleteDuplicateSongs = function (cb) {
+  this.model('Playlists').find({ songs: {} }, cb);
+};
+
+
+
 module.exports = mongoose.model('Playlist', playlistSchema);
